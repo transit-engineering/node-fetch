@@ -56,14 +56,22 @@ function isRequest(input) {
 	);
 }
 
-function isAbortSignal(signal) {
-	const proto = (
-		signal
-		&& typeof signal === 'object'
-		&& Object.getPrototypeOf(signal)
-	);
-	return !!(proto && proto.constructor.name === 'AbortSignal');
-}
+
+const NAME = Symbol.toStringTag;
+
+/**
+ * Check if `obj` is an instance of AbortSignal.
+ * @param {*} object - Object to check for
+ * @return {boolean}
+ */
+export function isAbortSignal (object) {
+  return (
+    typeof object === 'object' && (
+      object[NAME] === 'AbortSignal' ||
+      object[NAME] === 'EventTarget'
+    )
+  );
+};
 
 /**
  * Request class
